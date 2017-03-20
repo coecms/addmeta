@@ -41,8 +41,8 @@ def read_yaml(fname):
 
 def combine_meta(fnames):
     """Read multiple yaml files containing meta data and combine their
-    dictionaries. The order of the files is the order of preference, so
-    files listed later will have their fields overwritten by files list earlier"""
+    dictionaries. The order of the files is the reverse order of preference, so
+    files listed later overwrite fields from files list earlier"""
 
     allmeta = {}
 
@@ -74,3 +74,8 @@ def find_and_add_meta(ncfiles, metafiles):
         add_meta(fname, metadata)
         
     
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description="Add meta data to one or more netCDF files")
+    parser.add_argument("inputs", help="netCDF files or directories (-r must be specified to recursively descend directories)", nargs='+')
+    args = parser.parse_args()
