@@ -4,7 +4,7 @@ python:
     - '2.7'
     - '3.5'
 install:
-    - pip install --upgrade pytest coverage codecov
+    - pip install --upgrade pip pytest coverage codecov
     - pip install .[dev]
 script:
     - coverage run --source addmeta -m py.test
