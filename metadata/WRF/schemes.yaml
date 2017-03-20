@@ -1,0 +1,8 @@
+global:
+      wrf_schemes_ra_lw_physics : "RRTM; Mlawer et al. (1997, JGR)"
+      wrf_schemes_sf_sfclay_physics : "MM5; Paulson (1970, JAM), Dyer and Hicks (1970, QJRMS), and Webb (1970, QJRMS)"
+      wrf_schemes_cu_physics : "None; No scheme used"
+      wrf_schemes_bl_pbl_physics : "YSU; Hong, Noh and Dudhia (2006, MWR)"
+      wrf_schemes_ra_sw_physics : "Dudhia; Dudhia (1989, JAS)"
+      wrf_schemes_sf_surface_physics : "Noah; Chen and Dudhia (2001, MWR)"
+

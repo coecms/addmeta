@@ -59,3 +59,13 @@ def test_read_yaml():
     dictcombined = combine_meta(('test/meta2.yaml','test/meta1.yaml'))
 
     assert(dictcombined == {'global': {'Publisher': 'ARC Centre of Excellence for Climate System Science', 'Year': 2017, 'Credit': 'NCI'}})
+
+def test_metadata():
+
+    metadata_dir = 'metadata'
+
+    for root, dirs, files in os.walk(metadata_dir):
+        for fname in files:
+            path = os.path.join(root,fname)
+            print("Reading {}".format(path))
+            dict = read_yaml(path)
