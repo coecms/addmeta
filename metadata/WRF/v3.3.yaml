@@ -1,0 +1,3 @@
+global:
+        RCM_version_id : "v3.3"
+        RCM_source : "WRF 3.3 modified at the Climate Change Research Centre"

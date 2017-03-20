@@ -33,9 +33,22 @@ import shlex
 sys.path.append('..')
 sys.path.append('.')
 
-from addmeta import read_yaml, dict_merge, combine_meta
+from addmeta import read_yaml, dict_merge, combine_meta, add_meta, find_and_add_meta
 
 verbose = True
+
+def runcmd(cmd):
+    subprocess.check_call(shlex.split(cmd),stderr=subprocess.STDOUT)
+
+def setup_module(module):
+    if verbose: print ("setup_module      module:%s" % module.__name__)
+    cmd = "ncgen -o test/test.nc test/test.cdf"
+    runcmd(cmd)
+ 
+def teardown_module(module):
+    if verbose: print ("teardown_module   module:%s" % module.__name__)
+    cmd = "rm test/test.nc"
+#    runcmd(cmd)
 
 def test_read_yaml():
     if verbose:  print("\nIn test_read_yaml")
@@ -69,3 +82,14 @@ def test_metadata():
             path = os.path.join(root,fname)
             print("Reading {}".format(path))
             dict = read_yaml(path)
+
+def test_add_meta():
+    
+    dict1 = read_yaml("test/meta1.yaml")
+
+    add_meta('test/test.nc', dict1)
+
+
+def test_find_add_meta():
+    
+    find_and_add_meta(['test/test.nc'], ['test/meta2.yaml','test/meta1.yaml'])

@@ -3,6 +3,8 @@
 import errno
 import yaml
 import collections
+import xarray
+import netCDF4 as nc
 
 # From https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
 def dict_merge(dct, merge_dct):
@@ -49,6 +51,26 @@ def combine_meta(fnames):
         dict_merge(allmeta, meta)
 
     return allmeta
+
+def add_meta(ncfile, metadict):
+    """Add meta data from a dictionary to a netCDF file
+    """
+
+    rootgrp = nc.Dataset(ncfile, "r+")
+
+    rootgrp.setncatts(metadict["global"])
+
+    rootgrp.close()
+
+
+def find_and_add_meta(ncfiles, metafiles):
+    """Add meta data from 1 or more yaml formatted files to one or more
+    netCDF files
+    """
+
+    metadata = combine_meta(metafiles)
+
+    for fname in ncfiles:
+        add_meta(fname, metadata)
         
     
-
