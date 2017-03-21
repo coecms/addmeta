@@ -34,7 +34,7 @@ import copy
 sys.path.append('..')
 sys.path.append('.')
 
-from addmeta import read_yaml, dict_merge, combine_meta, add_meta, find_and_add_meta
+from addmeta import read_yaml, dict_merge, combine_meta, add_meta, find_and_add_meta, skip_comments, list_from_file
 
 verbose = True
 
@@ -43,7 +43,7 @@ def runcmd(cmd):
 
 def setup_module(module):
     if verbose: print ("setup_module      module:%s" % module.__name__)
-    cmd = "ncgen -o test/test.nc test/test.cdf"
+    cmd = "ncgen -o test/test.nc test/test.cdl"
     runcmd(cmd)
  
 def teardown_module(module):
@@ -88,6 +88,21 @@ def test_metadata():
             path = os.path.join(root,fname)
             print("Reading {}".format(path))
             dict = read_yaml(path)
+
+def test_skipcomments():
+
+    fname = 'test/metalist'
+    with open(fname, 'rt') as f:
+        filelist = tuple(skip_comments(f))
+
+    assert(filelist == ('meta1.yaml', 'meta2.yaml'))
+    
+def test_list_from_file():
+
+    fname = 'test/metalist'
+    filelist = list_from_file(fname)
+    assert(filelist == ('meta1.yaml', 'meta2.yaml'))
+    
 
 def test_add_meta():
     
