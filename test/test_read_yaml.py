@@ -113,4 +113,4 @@ def test_add_meta():
 
 def test_find_add_meta():
     
-    find_and_add_meta(['test/test.nc'], ['test/meta2.yaml','test/meta1.yaml'])
+    find_and_add_meta(['test/meta2.yaml','test/meta1.yaml'], ['test/test.nc'])
