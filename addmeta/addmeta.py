@@ -52,11 +52,21 @@ def add_meta(ncfile, metadict):
     """
 
     rootgrp = nc.Dataset(ncfile, "r+")
-    rootgrp.setncatts(metadict["global"])
+    # Add metadata to matching variables
+    if "variables" in metadict:
+        for var in metadict["variables"].keys():
+            print(var)
+            print(rootgrp.variables)
+            if var in rootgrp.variables:
+                print(metadict["variables"][var])
+                rootgrp.variables[var].setncatts(metadict["variables"][var])
+    # Set global meta data
+    if "global" in metadict:
+        rootgrp.setncatts(metadict["global"])
     rootgrp.close()
 
 
-def find_and_add_meta(metafiles, ncfiles):
+def find_and_add_meta(ncfiles, metafiles):
     """Add meta data from 1 or more yaml formatted files to one or more
     netCDF files
     """
@@ -99,4 +109,4 @@ if __name__ == "__main__":
 
     if verbose: print("metafiles: "," ".join(metafiles))
 
-    find_and_add_meta(metafiles, args.files)
+    find_and_add_meta(args.files, metafiles)

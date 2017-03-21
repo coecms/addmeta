@@ -29,6 +29,8 @@ import shutil
 import subprocess
 import shlex
 import copy
+import netCDF4 as nc
+import six
 
 # Find the python libraries we're testing
 sys.path.append('..')
@@ -41,15 +43,21 @@ verbose = True
 def runcmd(cmd):
     subprocess.check_call(shlex.split(cmd),stderr=subprocess.STDOUT)
 
-def setup_module(module):
-    if verbose: print ("setup_module      module:%s" % module.__name__)
+def make_nc():
     cmd = "ncgen -o test/test.nc test/test.cdl"
     runcmd(cmd)
+
+def delete_nc():
+    cmd = "rm test/test.nc"
+    runcmd(cmd)
+
+def setup_module(module):
+    if verbose: print ("setup_module      module:%s" % module.__name__)
+    make_nc()
  
 def teardown_module(module):
     if verbose: print ("teardown_module   module:%s" % module.__name__)
-    cmd = "rm test/test.nc"
-#    runcmd(cmd)
+    delete_nc()
 
 def test_read_yaml():
     if verbose:  print("\nIn test_read_yaml")
@@ -103,14 +111,59 @@ def test_list_from_file():
     filelist = list_from_file(fname)
     assert(filelist == ('meta1.yaml', 'meta2.yaml'))
     
+def get_meta_data_from_file(fname,var=None):
 
+    metadict = {}
+    rootgrp = nc.Dataset(fname, "r")
+    if var is None:
+        metadict = rootgrp.__dict__
+    else:
+        metadict = rootgrp.variables[var].__dict__
+        
+    rootgrp.close()
+    return metadict
+
+def dict1_in_dict2(dict1, dict2):
+
+    for k,v in six.iteritems(dict1):
+        if k in dict2:
+            if dict1[k] != dict2[k]:
+                return False
+        else:
+            return False
+
+    return True
+           
 def test_add_meta():
+
+    ncfile = 'test/test.nc'
     
     dict1 = read_yaml("test/meta1.yaml")
+    add_meta(ncfile, dict1)
 
-    add_meta('test/test.nc', dict1)
+    assert(dict1_in_dict2(dict1["global"], get_meta_data_from_file(ncfile)))
 
+    dict1 = read_yaml("test/meta_var1.yaml")
+    add_meta(ncfile, dict1)
+
+    for var in dict1["variables"]:
+        assert(dict1_in_dict2(dict1["variables"][var], get_meta_data_from_file(ncfile,var)))
 
 def test_find_add_meta():
     
-    find_and_add_meta(['test/meta2.yaml','test/meta1.yaml'], ['test/test.nc'])
+    ncfile = 'test/test.nc'
+
+    delete_nc()
+    make_nc()
+    find_and_add_meta( [ncfile], ['test/meta2.yaml','test/meta1.yaml'])
+
+    dict1 = read_yaml("test/meta1.yaml")
+    assert(dict1_in_dict2(dict1["global"], get_meta_data_from_file(ncfile)))
+
+    find_and_add_meta( [ncfile], ['test/meta_var1.yaml'] )
+
+    dict1 = read_yaml("test/meta_var1.yaml")
+
+    for var in dict1["variables"]:
+        assert(dict1_in_dict2(dict1["variables"][var], get_meta_data_from_file(ncfile,var)))
+
