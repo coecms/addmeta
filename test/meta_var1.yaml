@@ -1,0 +1,9 @@
+variables:
+    temp:
+       short_name: "temp"
+       units : "degrees Kelvin"
+       max : 600
+       min : -100
+    Times:
+       funky_name: "It is totall time"
+       limits : 0
