@@ -28,6 +28,7 @@ import os
 import shutil
 import subprocess
 import shlex
+import copy
 
 # Find the python libraries we're testing
 sys.path.append('..')
@@ -61,17 +62,22 @@ def test_read_yaml():
 
     assert(dict2 == {'global': {'Publisher': 'ARC Centre of Excellence for Climate System Science (ARCCSS)', 'Credit': 'NCI'}})
 
-    dictcombined = dict(dict2)
+    dictcombined = copy.deepcopy(dict2)
 
     dict_merge(dictcombined,dict1)
 
     assert(dictcombined == {'global': {'Publisher': 'ARC Centre of Excellence for Climate System Science', 'Year': 2017, 'Credit': 'NCI'}})
 
     dictcombined = {}
-    # dictcombined = combine_meta(('test/meta1.yaml','test/meta2.yaml'))
     dictcombined = combine_meta(('test/meta2.yaml','test/meta1.yaml'))
 
     assert(dictcombined == {'global': {'Publisher': 'ARC Centre of Excellence for Climate System Science', 'Year': 2017, 'Credit': 'NCI'}})
+
+    # Unfortunately when yaml files are concatenated, subsequent values overwrite
+    # previous entries, so this is equivalent to dict2
+    dictcat = read_yaml("test/meta12.yaml")
+
+    assert(dictcat == dict2)
 
 def test_metadata():
 
