@@ -32,10 +32,6 @@ import copy
 import netCDF4 as nc
 import six
 
-# Find the python libraries we're testing
-sys.path.append('..')
-sys.path.append('.')
-
 from addmeta import read_yaml, dict_merge, combine_meta, add_meta, find_and_add_meta, skip_comments, list_from_file
 
 verbose = True
