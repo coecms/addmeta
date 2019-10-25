@@ -1,14 +1,13 @@
 language: python
 python:
-    - '2.7'
-    - '3.5'
+    - '3.6'
+    - '3.7'
 before_install:
     - sudo apt-get -qq update
     - sudo apt-get install -y netcdf-bin
 install:
-    - pip install --upgrade pip pytest coverage codecov six
+    - pip install --upgrade pip pytest coverage codecov six pytest-cov
     - pip install .[dev]
-script:
-    - coverage run --source addmeta -m python -m pytest test -s
+script: python -m pytest
 after_success:
     - codecov
