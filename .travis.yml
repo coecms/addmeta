@@ -9,6 +9,6 @@ install:
     - pip install --upgrade pip pytest coverage codecov six
     - pip install .[dev]
 script:
-    - coverage run --source addmeta -m py.test
+    - coverage run --source addmeta -m python -m pytest test -s
 after_success:
     - codecov
