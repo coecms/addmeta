@@ -32,6 +32,8 @@ import copy
 import netCDF4 as nc
 import six
 
+from pathlib import Path
+
 from addmeta import read_yaml, dict_merge, combine_meta, add_meta, find_and_add_meta, skip_comments, list_from_file
 
 verbose = True
@@ -97,15 +99,15 @@ def test_skipcomments():
 
     fname = 'test/metalist'
     with open(fname, 'rt') as f:
-        filelist = tuple(skip_comments(f))
+        filelist = list(skip_comments(f))
 
-    assert(filelist == ('meta1.yaml', 'meta2.yaml'))
+    assert(filelist == ['meta1.yaml', 'meta2.yaml'])
     
 def test_list_from_file():
 
     fname = 'test/metalist'
     filelist = list_from_file(fname)
-    assert(filelist == ('meta1.yaml', 'meta2.yaml'))
+    assert(filelist == [Path('test/meta1.yaml'), Path('test/meta2.yaml')])
     
 def get_meta_data_from_file(fname,var=None):
 
