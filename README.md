@@ -12,7 +12,7 @@ The metadata is in key-value pairs and is a global attribute if defined in a
 `global` section, or applied to a specific named variable in the `variables` 
 section. 
 
-For example the following is an example of an addmeta file:
+For example the following is an example of an attribute file:
 ```yaml
 global:
     # Mandatory since it gives a key to all the other attributes
