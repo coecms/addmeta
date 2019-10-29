@@ -43,13 +43,13 @@ def main(args):
     metafiles = []
     verbose = args.verbose
 
-    if (args.metafiles is not None):
-        metafiles.extend(args.metafiles)
-
     if (args.metalist is not None):
         metafiles.extend(addmeta.list_from_file(args.metalist))
 
-    if verbose: print("metafiles: "," ".join(metafiles))
+    if (args.metafiles is not None):
+        metafiles.extend(args.metafiles)
+
+    if verbose: print("metafiles: "," ".join([str(f) for f in metafiles]))
 
     addmeta.find_and_add_meta(args.files, metafiles)
 
