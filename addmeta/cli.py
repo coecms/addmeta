@@ -30,7 +30,7 @@ def parse_args(args):
     parser = argparse.ArgumentParser(description="Add meta data to one or more netCDF files")
 
     parser.add_argument("-m","--metafiles", help="One or more meta-data files in YAML format", action='append')
-    parser.add_argument("-l","--metalist", help="File containing a list of meta-data files")
+    parser.add_argument("-l","--metalist", help="File containing a list of meta-data files", action='append')
     parser.add_argument("-v","--verbose", help="Verbose output", action='store_true')
     parser.add_argument("files", help="netCDF files", nargs='+')
 
@@ -44,7 +44,8 @@ def main(args):
     verbose = args.verbose
 
     if (args.metalist is not None):
-        metafiles.extend(addmeta.list_from_file(args.metalist))
+        for listfile in args.metalist:
+            metafiles.extend(addmeta.list_from_file(listfile))
 
     if (args.metafiles is not None):
         metafiles.extend(args.metafiles)

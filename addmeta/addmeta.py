@@ -29,8 +29,12 @@ def dict_merge(dct, merge_dct):
 def read_yaml(fname):
     """Parse yaml file and return a dict."""
 
-    with open(fname, 'r') as yaml_file:
-        metadict = yaml.safe_load(yaml_file)
+    metadict = {}
+    try:
+        with open(fname, 'r') as yaml_file:
+            metadict = yaml.safe_load(yaml_file)
+    except Exception as e:
+        print("Error loading {file}\n{error}".format(file=fname, error=e))
 
     return metadict
 
