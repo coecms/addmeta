@@ -42,7 +42,7 @@ values can be given and overridden when necessary.
 `addmeta` is a command line program. Invoking with the `-h` flag prints
 a summay of how to invoke the program correctly.
 
-    $ ~/.local/bin/addmeta -h
+    $ addmeta -h
     usage: addmeta [-h] [-m METAFILES] [-l METALIST] [-v] files [files ...]
 
     Add meta data to one or more netCDF files
