@@ -52,26 +52,39 @@ def combine_meta(fnames):
     return allmeta
 
 def add_meta(ncfile, metadict):
-    """Add meta data from a dictionary to a netCDF file
+    """
+    Add meta data from a dictionary to a netCDF file
     """
 
     rootgrp = nc.Dataset(ncfile, "r+")
     # Add metadata to matching variables
     if "variables" in metadict:
-        for var in metadict["variables"].keys():
-            # print(var)
-            # print(rootgrp.variables)
+        for var, attr_dict in metadict["variables"].items():
             if var in rootgrp.variables:
-                # print(metadict["variables"][var])
-                rootgrp.variables[var].setncatts(metadict["variables"][var])
+                for attr, value in attr_dict.items():
+                    set_attribute(rootgrp.variables[var], attr, value)
+
     # Set global meta data
     if "global" in metadict:
-        rootgrp.setncatts(metadict["global"])
+        for attr, value in metadict['global'].items():
+            set_attribute(rootgrp, attr, value)
+
     rootgrp.close()
+
+def set_attribute(group, attribute, value):
+    """
+    Small wrapper to select to delete or set attribute depending 
+    on value passed 
+    """
+    if value is None:
+        group.delncattr(attribute)
+    else:
+        group.setncattr(attribute, value)
 
 
 def find_and_add_meta(ncfiles, metafiles):
-    """Add meta data from 1 or more yaml formatted files to one or more
+    """
+    Add meta data from 1 or more yaml formatted files to one or more
     netCDF files
     """
 

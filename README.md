@@ -12,6 +12,8 @@ The metadata is in key-value pairs and is a global attribute if defined in a
 `global` section, or applied to a specific named variable in the `variables` 
 section. 
 
+If an attribute is listed with a missing value that attribute is deleted from the file.
+
 For example the following is an example of an attribute file:
 ```yaml
 global:
@@ -21,6 +23,7 @@ global:
     license: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
 variables:
     yt_ocean:
+        _FillValue:
         long_name: "latitude in rotated pole grid"
         units: "degrees"
     geolat_t:
@@ -30,12 +33,13 @@ variables:
 ```
 It will create (or replace) two global attributes: `Conventions` and `license`.
 It will also create (or replace) attributes for two variables, `yt_ocean` and
-`geolat_t`.
+`geolat_t`, and delete the `_FillValue` attribute of `yt_ocean`.
 
 The information is read into a `python` dict. Multiple attribute files can be
 specified. If the same attribute is defined more than once, the last attribute
 file specified takes precedence. Like cascading style sheets this means default
 values can be given and overridden when necessary. 
+
 
 ## Invocation
 

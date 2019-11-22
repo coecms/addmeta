@@ -165,3 +165,30 @@ def test_find_add_meta():
     for var in dict1["variables"]:
         assert(dict1_in_dict2(dict1["variables"][var], get_meta_data_from_file(ncfile,var)))
 
+def test_del_attributes():
+    
+    ncfile = 'test/test.nc'
+
+    delete_nc()
+    make_nc()
+
+    attributes = get_meta_data_from_file(ncfile)
+    assert( 'unlikelytobeoverwritten' in attributes )
+    assert( 'Tiddly' not in attributes )
+
+    attributes = get_meta_data_from_file(ncfile, 'temp')
+    assert( '_FillValue' in attributes )
+    assert( 'Tiddly' not in attributes )
+
+    find_and_add_meta( [ncfile], ['test/meta_del.yaml'])
+
+    attributes = get_meta_data_from_file(ncfile)
+    assert( 'unlikelytobeoverwritten' not in attributes )
+    assert( 'Tiddly' in attributes )
+    assert( 'A long impressive sounding name' == attributes['Publisher'] )
+
+    attributes = get_meta_data_from_file(ncfile, 'temp')
+    assert( '_FillValue' not in attributes )
+    assert( 'Tiddly' in attributes )
+    assert( 'Kelvin' == attributes['units'] )
+

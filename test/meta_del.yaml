@@ -1,0 +1,10 @@
+
+global:
+    Tiddly: "winks"
+    Publisher: "A long impressive sounding name"
+    unlikelytobeoverwritten:
+variables:
+    temp:
+        Tiddly: "winks"
+        units: "Kelvin"
+        _FillValue: 
