@@ -3,6 +3,7 @@ global:
     Tiddly: "winks"
     Publisher: "A long impressive sounding name"
     unlikelytobeoverwritten:
+    notactualattribute:
 variables:
     temp:
         Tiddly: "winks"

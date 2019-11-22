@@ -77,7 +77,8 @@ def set_attribute(group, attribute, value):
     on value passed 
     """
     if value is None:
-        group.delncattr(attribute)
+        if attribute in group.__dict__:
+            group.delncattr(attribute)
     else:
         group.setncattr(attribute, value)
 
